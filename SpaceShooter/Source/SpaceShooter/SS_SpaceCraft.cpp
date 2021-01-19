@@ -9,26 +9,32 @@ ASS_SpaceCraft::ASS_SpaceCraft()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-}
+	auto DefaultSceneRoot = CreateAbstractDefaultSubobject<USceneComponent>(TEXT("Default Scene Root"));
+	RootComponent = DefaultSceneRoot;
 
-// Called when the game starts or when spawned
-void ASS_SpaceCraft::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
+	SM_Spacecraft = CreateAbstractDefaultSubobject<UStaticMeshComponent>(TEXT("SM Spacecraft"));
+	SM_Spacecraft->SetupAttachment(DefaultSceneRoot);
 
-// Called every frame
-void ASS_SpaceCraft::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Warning, TEXT("Konichiwa"));
+	SM_Spacecraft->SetEnableGravity(false);
+	SM_Spacecraft->SetConstraintMode(EDOFMode::XYPlane);
+	SM_Spacecraft->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	SM_Spacecraft->SetCollisionProfileName(TEXT("PhysicsActor"));
+
+	FloatingComp = CreateAbstractDefaultSubobject<UFloatingPawnMovement>(TEXT("Floating Movement"));
 }
 
 // Called to bind functionality to input
-void ASS_SpaceCraft::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ASS_SpaceCraft::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	Super::SetupPlayerInputComponent(playerInputComponent);
 }
 
+void ASS_SpaceCraft::MoveVertical(float value)
+{
+	AddMovementInput(FVector(1.0f, 0.0f, 0.0f), value);
+}
+
+void ASS_SpaceCraft::MoveHorizontal(float value)
+{
+	AddMovementInput(FVector(0.0f, 1.0f, 0.0f), value);
+}

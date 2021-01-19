@@ -6,7 +6,7 @@
 #include "GameFramework/Pawn.h"
 
 //#include "Blueprint/UserWidget.h"
-//#include "GameFramework/FloatingPawnMovement.h"
+#include "GameFramework/FloatingPawnMovement.h"
 
 #include "SS_SpaceCraft.generated.h"
 
@@ -19,20 +19,16 @@ public:
 	// Sets default values for this pawn's properties
 	ASS_SpaceCraft();
 
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Space")
-	//	UFloatingPawnMovement* FloatingComp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* SM_Spacecraft;
 
-	//TSubclassOf<UUserWidget> Temp;
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Space")
+		UFloatingPawnMovement* FloatingComp;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;
 
+	virtual void MoveVertical(float value);
+
+	virtual void MoveHorizontal(float value);
 };
