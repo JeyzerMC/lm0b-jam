@@ -20,6 +20,9 @@ public:
 
 	float MovementSpeed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<UStaticMesh*> Meshes;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -29,6 +32,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UStaticMeshComponent* SM_Asteroid;
+
+
 
 private:
 	bool CheckBoundary();

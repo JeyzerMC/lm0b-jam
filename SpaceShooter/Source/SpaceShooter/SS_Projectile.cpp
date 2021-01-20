@@ -42,7 +42,8 @@ void ASS_Projectile::Tick(float DeltaTime)
 void ASS_Projectile::OnOverlapBegin(UPrimitiveComponent* overlappedComp, AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
 {
 	if (otherComp->GetCollisionObjectType() == ECC_Destructible) {
-		UE_LOG(LogTemp, Warning, TEXT("Projectile reached target"));
+		//UE_LOG(LogTemp, Warning, TEXT("Projectile reached target"));
+		Destroy();
 	}
 }
 

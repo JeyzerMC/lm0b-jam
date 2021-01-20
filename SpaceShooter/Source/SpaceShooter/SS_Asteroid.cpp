@@ -27,6 +27,9 @@ void ASS_Asteroid::BeginPlay()
 {
 	Super::BeginPlay();
 	SM_Asteroid->OnComponentBeginOverlap.AddDynamic(this, &ASS_Asteroid::OnOverlapBegin);
+
+	auto idx = FMath::RandRange(0, Meshes.Num() - 1);
+	SM_Asteroid->SetStaticMesh(Meshes[idx]);
 }
 
 // Called every frame
@@ -48,7 +51,8 @@ void ASS_Asteroid::Tick(float deltaTime)
 void ASS_Asteroid::OnOverlapBegin(UPrimitiveComponent* overlappedComp, AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
 {
 	if (otherComp->GetCollisionObjectType() == ECC_PhysicsBody) {
-		UE_LOG(LogTemp, Warning, TEXT("Asteroid shot down"));
+		//UE_LOG(LogTemp, Warning, TEXT("Asteroid shot down"));
+		Destroy();
 	}
 }
 
