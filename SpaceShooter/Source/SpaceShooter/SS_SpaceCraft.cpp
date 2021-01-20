@@ -18,9 +18,18 @@ ASS_SpaceCraft::ASS_SpaceCraft()
 	SM_Spacecraft->SetEnableGravity(false);
 	SM_Spacecraft->SetConstraintMode(EDOFMode::XYPlane);
 	SM_Spacecraft->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	SM_Spacecraft->SetCollisionProfileName(TEXT("PhysicsActor"));
+	SM_Spacecraft->SetCollisionProfileName(TEXT("Vehicle"));
+	SM_Spacecraft->SetCollisionResponseToChannel(ECC_Destructible, ECollisionResponse::ECR_Overlap);
+	SM_Spacecraft->SetCollisionResponseToChannel(ECC_PhysicsBody, ECollisionResponse::ECR_Overlap);
 
 	FloatingComp = CreateAbstractDefaultSubobject<UFloatingPawnMovement>(TEXT("Floating Movement"));
+}
+
+void ASS_SpaceCraft::BeginPlay()
+{
+	Super::BeginPlay();
+
+	SM_Spacecraft->OnComponentBeginOverlap.AddDynamic(this, &ASS_SpaceCraft::OnOverlapBegin);
 }
 
 // Called to bind functionality to input
@@ -37,4 +46,11 @@ void ASS_SpaceCraft::MoveVertical(float value)
 void ASS_SpaceCraft::MoveHorizontal(float value)
 {
 	AddMovementInput(FVector(0.0f, 1.0f, 0.0f), value);
+}
+
+void ASS_SpaceCraft::OnOverlapBegin(UPrimitiveComponent* overlappedComp, AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
+{
+	if (otherComp->GetCollisionObjectType() == ECC_Destructible) {
+		UE_LOG(LogTemp, Warning, TEXT("Crashed into asteroid"));
+	}
 }

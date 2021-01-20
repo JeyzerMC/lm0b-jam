@@ -7,6 +7,7 @@
 #include "SS_Player_Controller.generated.h"
 
 class ASS_SpaceCraft;
+class ASS_Projectile;
 /**
  * 
  */
@@ -27,8 +28,15 @@ protected:
 
 	void MoveHorizontal(float value);
 
-private:
-	FVector2D GetViewportPosition(ASS_SpaceCraft* pawn);
+	void Dash();
 
-	bool CheckBoundaries(int axis, float value);
+	void Shoot();
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<ASS_Projectile> Projectile_BP;
+
+private:
+	bool CheckBoundaries(AActor* pawn, int axis, float value);
+
+	FVector2D GetViewportPosition(AActor* pawn);
 };
