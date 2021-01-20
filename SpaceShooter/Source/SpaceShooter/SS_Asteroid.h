@@ -16,7 +16,9 @@ public:
 	ASS_Asteroid();
 
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float deltaTime) override;
+
+	float MovementSpeed;
 
 protected:
 	// Called when the game starts or when spawned
@@ -27,4 +29,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UStaticMeshComponent* SM_Asteroid;
+
+private:
+	bool CheckBoundary();
 };

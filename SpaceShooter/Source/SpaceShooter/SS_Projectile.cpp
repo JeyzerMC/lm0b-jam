@@ -62,4 +62,3 @@ bool ASS_Projectile::CheckBoundary()
 
 	return true;
 }
-

@@ -2,6 +2,7 @@
 
 
 #include "SS_SpaceCraft.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASS_SpaceCraft::ASS_SpaceCraft()
@@ -51,6 +52,7 @@ void ASS_SpaceCraft::MoveHorizontal(float value)
 void ASS_SpaceCraft::OnOverlapBegin(UPrimitiveComponent* overlappedComp, AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
 {
 	if (otherComp->GetCollisionObjectType() == ECC_Destructible) {
+		UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
 		UE_LOG(LogTemp, Warning, TEXT("Crashed into asteroid"));
 	}
 }
