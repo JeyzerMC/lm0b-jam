@@ -41,6 +41,9 @@ public:
 		float BaseAsteroidMoveSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float MaxAsteroidMoveSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float IncreaseAsteroidSpeedRate;
 
 protected:
@@ -50,4 +53,8 @@ protected:
 	void SpawnAsteroid();
 
 	float m_CurrentAsteroidMoveSpeed;
+
+	float m_CurrentSpawnInterval;
+
+	float m_SpawnTimer;
 };
