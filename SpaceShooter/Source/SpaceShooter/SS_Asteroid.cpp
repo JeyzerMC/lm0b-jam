@@ -2,7 +2,9 @@
 
 
 #include "SS_Asteroid.h"
+#include "SS_Widget_HUD.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 // Sets default values
 ASS_Asteroid::ASS_Asteroid()
@@ -54,7 +56,7 @@ void ASS_Asteroid::Tick(float deltaTime)
 void ASS_Asteroid::OnOverlapBegin(UPrimitiveComponent* overlappedComp, AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
 {
 	if (otherComp->GetCollisionObjectType() == ECC_PhysicsBody) {
-		//UE_LOG(LogTemp, Warning, TEXT("Asteroid shot down"));
+		UpdateScore();
 		Destroy();
 	}
 }
@@ -74,4 +76,16 @@ bool ASS_Asteroid::CheckBoundary()
 	}
 
 	return true;
+}
+
+void ASS_Asteroid::UpdateScore()
+{
+	TArray<UUserWidget*> widgets;
+	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), widgets, USS_Widget_HUD::StaticClass());
+
+	auto widget = Cast<USS_Widget_HUD>(widgets[0]);
+
+	if (widget) {
+		widget->OnAsteroidDestroyed.Broadcast();
+	}
 }

@@ -36,8 +36,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UStaticMeshComponent* SM_Asteroid;
 
-
-
 private:
 	bool CheckBoundary();
+
+	void UpdateScore();
 };
