@@ -30,6 +30,9 @@ void ASS_Asteroid::BeginPlay()
 
 	auto idx = FMath::RandRange(0, Meshes.Num() - 1);
 	SM_Asteroid->SetStaticMesh(Meshes[idx]);
+
+	idx = FMath::RandRange(0, Materials.Num() - 1);
+	SM_Asteroid->SetMaterial(0, Materials[idx]);
 }
 
 // Called every frame

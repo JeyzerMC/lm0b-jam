@@ -23,6 +23,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<UStaticMesh*> Meshes;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<UMaterialInstance*> Materials;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
