@@ -45,7 +45,7 @@ void ASS_Player_Controller::Tick(float deltaTime)
 	}
 
 	if (m_RemainingBullets < m_NBullets) {
-		m_Recharges.Sort([](int a, int b) { return a > b; });
+		m_Recharges.Sort([](float a, float b) { return a > b; });
 	}
 
 	//GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::Yellow, FString::Printf(TEXT("Remaining bullets: %d"), m_RemainingBullets));
