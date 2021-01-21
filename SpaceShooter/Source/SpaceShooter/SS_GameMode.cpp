@@ -22,10 +22,12 @@ void ASS_GameMode::BeginPlay()
 
 	OnSpaceshipDestroyed.AddDynamic(this, &ASS_GameMode::OnGameEnd);
 
+	auto bgm = ForceMusic == -1? FMath::RandRange(1, BackgroundMusic.Num() - 1) : ForceMusic;
+
 	//UGameplayStatics::Spawn(GetWorld(), BackgroundMusic);
-	m_BGM = UGameplayStatics::SpawnSound2D(GetWorld(), BackgroundMusic);
+	m_BGM = UGameplayStatics::SpawnSound2D(GetWorld(), BackgroundMusic[bgm]);
 	if (m_BGM) {
-		m_BGM->Play();
+		m_BGM->FadeIn(0.5f);
 	}
 }
 

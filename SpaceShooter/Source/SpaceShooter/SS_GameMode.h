@@ -53,7 +53,10 @@ public:
 		float IncreaseAsteroidSpeedRate;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		USoundCue* BackgroundMusic;
+		int ForceMusic;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<USoundCue*> BackgroundMusic;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		USoundCue* GameOverMusic;
