@@ -4,6 +4,7 @@
 #include "SS_GameMode.h"
 #include "SS_Asteroid.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
 
 ASS_GameMode::ASS_GameMode()
 {
@@ -20,6 +21,12 @@ void ASS_GameMode::BeginPlay()
 	SpawnAsteroid();
 
 	OnSpaceshipDestroyed.AddDynamic(this, &ASS_GameMode::OnGameEnd);
+
+	//UGameplayStatics::Spawn(GetWorld(), BackgroundMusic);
+	m_BGM = UGameplayStatics::SpawnSound2D(GetWorld(), BackgroundMusic);
+	if (m_BGM) {
+		m_BGM->Play();
+	}
 }
 
 void ASS_GameMode::Tick(float deltaTime)
@@ -52,5 +59,9 @@ void ASS_GameMode::SpawnAsteroid()
 
 void ASS_GameMode::OnGameEnd()
 {
+	if (m_BGM) {
+		m_BGM->Stop();
+	}
+	UGameplayStatics::PlaySound2D(GetWorld(), GameOverMusic);
 	UE_LOG(LogTemp, Warning, TEXT("Game finished in Game mode"));
 }

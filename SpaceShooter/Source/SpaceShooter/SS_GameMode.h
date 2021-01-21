@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Sound/SoundCue.h"
 #include "SS_GameMode.generated.h"
 
 class ASS_Asteroid;
@@ -23,6 +24,9 @@ public:
 
 	// Called every frame
 	virtual void Tick(float deltaTime) override;
+
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly)
+		FSpaceshipDestroyed OnSpaceshipDestroyed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<ASS_Asteroid> Asteroid;
@@ -48,8 +52,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float IncreaseAsteroidSpeedRate;
 
-	UPROPERTY(BlueprintAssignable, BlueprintReadOnly)
-		FSpaceshipDestroyed OnSpaceshipDestroyed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USoundCue* BackgroundMusic;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USoundCue* GameOverMusic;
 
 protected:
 	// Called when the game starts or when spawned
@@ -62,6 +69,8 @@ protected:
 	float m_CurrentSpawnInterval;
 
 	float m_SpawnTimer;
+
+	UAudioComponent* m_BGM;
 
 	UFUNCTION()
 		void OnGameEnd();
