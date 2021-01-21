@@ -8,7 +8,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAsteroidDestroyed);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBulletRecharges, const TArray<float>&, bulletRecharges);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBulletRecharges, const TArray<float>&, bulletRecharges, bool, recharged);
 
 /**
  * 

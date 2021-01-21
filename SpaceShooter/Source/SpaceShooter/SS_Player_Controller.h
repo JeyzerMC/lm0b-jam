@@ -47,7 +47,7 @@ private:
 
 	FVector2D GetViewportPosition(AActor* pawn);
 
-	void EmitBulletRecharges();
+	void EmitBulletRecharges(bool recharged);
 
 	UFUNCTION()
 		virtual void SetupInputComponent() override;

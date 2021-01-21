@@ -34,6 +34,7 @@ void ASS_Player_Controller::BeginPlay()
 
 void ASS_Player_Controller::Tick(float deltaTime)
 {
+	bool recharged = false;
 	for (int i = m_RemainingBullets; i < m_NBullets; i++) {
 		if (m_Recharges[i] < 1.f) {
 			m_Recharges[i] += deltaTime / Cooldown;
@@ -41,6 +42,7 @@ void ASS_Player_Controller::Tick(float deltaTime)
 		else {
 			m_Recharges[i] = 1.f;
 			m_RemainingBullets++;
+			recharged = true;
 		}
 	}
 
@@ -49,7 +51,7 @@ void ASS_Player_Controller::Tick(float deltaTime)
 	}
 
 	//GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::Yellow, FString::Printf(TEXT("Remaining bullets: %d"), m_RemainingBullets));
-	EmitBulletRecharges();
+	EmitBulletRecharges(recharged);
 }
 
 void ASS_Player_Controller::SetupInputComponent()
@@ -133,7 +135,7 @@ FVector2D ASS_Player_Controller::GetViewportPosition(AActor* pawn)
 	return screen_pos;
 }
 
-void ASS_Player_Controller::EmitBulletRecharges()
+void ASS_Player_Controller::EmitBulletRecharges(bool recharged)
 {
 	TArray<UUserWidget*> widgets;
 	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), widgets, USS_Widget_HUD::StaticClass());
@@ -141,6 +143,6 @@ void ASS_Player_Controller::EmitBulletRecharges()
 	auto widget = Cast<USS_Widget_HUD>(widgets[0]);
 
 	if (widget) {
-		widget->OnBulletRecharges.Broadcast(m_Recharges);
+		widget->OnBulletRecharges.Broadcast(m_Recharges, recharged);
 	}
 }
