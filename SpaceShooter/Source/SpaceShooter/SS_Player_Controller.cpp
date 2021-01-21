@@ -109,6 +109,9 @@ void ASS_Player_Controller::Shoot()
 	FActorSpawnParameters spawn_params;
 	GetWorld()->SpawnActor<ASS_Projectile>(Projectile_BP, spawn_pos, spawn_rot, spawn_params);
 	m_Recharges[--m_RemainingBullets] = 0.f;
+	if (BulletSound) {
+		UGameplayStatics::PlaySound2D(GetWorld(), BulletSound);
+	}
 }
 
 bool ASS_Player_Controller::CheckBoundaries(AActor* pawn, int axis, float value)

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Sound/SoundCue.h"
 #include "SS_Player_Controller.generated.h"
 
 class ASS_SpaceCraft;
@@ -21,6 +22,9 @@ class SPACESHOOTER_API ASS_Player_Controller : public APlayerController
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Cooldown;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USoundCue* BulletSound;
 
 protected:
 	virtual void BeginPlay() override;
