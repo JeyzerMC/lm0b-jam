@@ -8,6 +8,8 @@
 
 class ASS_Asteroid;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSpaceshipDestroyed);
+
 /**
  * 
  */
@@ -46,6 +48,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float IncreaseAsteroidSpeedRate;
 
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly)
+		FSpaceshipDestroyed OnSpaceshipDestroyed;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -57,4 +62,7 @@ protected:
 	float m_CurrentSpawnInterval;
 
 	float m_SpawnTimer;
+
+	UFUNCTION()
+		void OnGameEnd();
 };

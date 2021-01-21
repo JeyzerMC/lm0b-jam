@@ -18,6 +18,8 @@ void ASS_GameMode::BeginPlay()
 	m_CurrentSpawnInterval = MinSpawnInterval;
 	m_SpawnTimer = m_CurrentSpawnInterval;
 	SpawnAsteroid();
+
+	OnSpaceshipDestroyed.AddDynamic(this, &ASS_GameMode::OnGameEnd);
 }
 
 void ASS_GameMode::Tick(float deltaTime)
@@ -46,4 +48,9 @@ void ASS_GameMode::SpawnAsteroid()
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("Spawning!"));
+}
+
+void ASS_GameMode::OnGameEnd()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Game finished in Game mode"));
 }

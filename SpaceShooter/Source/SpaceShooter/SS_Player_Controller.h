@@ -52,5 +52,8 @@ private:
 	UFUNCTION()
 		virtual void SetupInputComponent() override;
 
+	UFUNCTION()
+		void OnGameEnd();
+
 	TArray<float> m_Recharges;
 };

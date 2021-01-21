@@ -5,6 +5,7 @@
 #include "SS_SpaceCraft.h"
 #include "SS_Projectile.h"
 #include "SS_Widget_HUD.h"
+#include "SS_GameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Camera/CameraActor.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
@@ -20,7 +21,7 @@ ASS_Player_Controller::ASS_Player_Controller()
 void ASS_Player_Controller::BeginPlay()
 {
 	Super::BeginPlay();
-
+	SetShowMouseCursor(false);
 	TArray<AActor*> cameras;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACameraActor::StaticClass(), cameras);
 
@@ -29,6 +30,12 @@ void ASS_Player_Controller::BeginPlay()
 
 	for (int i = 0; i < m_NBullets; i++) {
 		m_Recharges.Add(1.f);
+	}
+
+	auto gm = Cast<ASS_GameMode>(GetWorld()->GetAuthGameMode());
+	if (gm) {
+		//gm->OnSpaceshipDestroyed.
+		gm->OnSpaceshipDestroyed.AddDynamic(this, &ASS_Player_Controller::OnGameEnd);
 	}
 }
 
@@ -63,8 +70,8 @@ void ASS_Player_Controller::SetupInputComponent()
 	InputComponent->BindAxis("MoveVertical", this, &ASS_Player_Controller::MoveVertical);
 	InputComponent->BindAxis("MoveHorizontal", this, &ASS_Player_Controller::MoveHorizontal);
 
-	InputComponent->BindAction("Dash", IE_Pressed, this, &ASS_Player_Controller::Dash);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &ASS_Player_Controller::Shoot);
+	InputComponent->BindAction("Dash", IE_Pressed, this, &ASS_Player_Controller::Dash);
 }
 
 void ASS_Player_Controller::MoveVertical(float value)
@@ -145,4 +152,12 @@ void ASS_Player_Controller::EmitBulletRecharges(bool recharged)
 	if (widget) {
 		widget->OnBulletRecharges.Broadcast(m_Recharges, recharged);
 	}
+}
+
+void ASS_Player_Controller::OnGameEnd()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Game End from Controller"));
+	InputComponent->RemoveActionBinding(0);
+	InputComponent->RemoveActionBinding(1);
+	SetShowMouseCursor(true);
 }
