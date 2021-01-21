@@ -13,7 +13,7 @@ ASS_GameMode::ASS_GameMode()
 void ASS_GameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("Testo"));
+	//UE_LOG(LogTemp, Warning, TEXT("Testo"));
 	m_CurrentAsteroidMoveSpeed = BaseAsteroidMoveSpeed;
 	m_CurrentSpawnInterval = MinSpawnInterval;
 	m_SpawnTimer = m_CurrentSpawnInterval;
@@ -47,7 +47,7 @@ void ASS_GameMode::SpawnAsteroid()
 		asteroid->MovementSpeed = FMath::RandRange(0.8f * m_CurrentAsteroidMoveSpeed, 1.2f * m_CurrentAsteroidMoveSpeed);
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Spawning!"));
+	//UE_LOG(LogTemp, Warning, TEXT("Spawning!"));
 }
 
 void ASS_GameMode::OnGameEnd()

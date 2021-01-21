@@ -156,7 +156,7 @@ void ASS_Player_Controller::EmitBulletRecharges(bool recharged)
 
 void ASS_Player_Controller::OnGameEnd()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Game End from Controller"));
+	//UE_LOG(LogTemp, Warning, TEXT("Game End from Controller"));
 	InputComponent->RemoveActionBinding(0);
 	InputComponent->RemoveActionBinding(1);
 	SetShowMouseCursor(true);
