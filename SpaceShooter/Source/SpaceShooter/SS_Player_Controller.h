@@ -18,11 +18,14 @@ class SPACESHOOTER_API ASS_Player_Controller : public APlayerController
 
 		ASS_Player_Controller();
 
-	UFUNCTION()
-		virtual void SetupInputComponent() override;
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int Cooldown;
 
 protected:
 	virtual void BeginPlay() override;
+
+	virtual void Tick(float deltaTime) override;
 
 	void MoveVertical(float value);
 
@@ -35,8 +38,19 @@ protected:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<ASS_Projectile> Projectile_BP;
 
+	int m_NBullets;
+
+	int m_RemainingBullets;
+
 private:
 	bool CheckBoundaries(AActor* pawn, int axis, float value);
 
 	FVector2D GetViewportPosition(AActor* pawn);
+
+	void EmitBulletRecharges();
+
+	UFUNCTION()
+		virtual void SetupInputComponent() override;
+
+	TArray<float> m_Recharges;
 };

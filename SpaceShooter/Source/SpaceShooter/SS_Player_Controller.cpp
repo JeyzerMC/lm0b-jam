@@ -4,13 +4,17 @@
 #include "SS_Player_Controller.h"
 #include "SS_SpaceCraft.h"
 #include "SS_Projectile.h"
+#include "SS_Widget_HUD.h"
 #include "Kismet/GameplayStatics.h"
 #include "Camera/CameraActor.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 constexpr float EDGE_DISTANCE = 50.f;
 
 ASS_Player_Controller::ASS_Player_Controller()
+	: m_RemainingBullets(0), m_NBullets(5)
 {
+	m_RemainingBullets = m_NBullets;
 }
 
 void ASS_Player_Controller::BeginPlay()
@@ -22,6 +26,30 @@ void ASS_Player_Controller::BeginPlay()
 
 	FViewTargetTransitionParams params;
 	SetViewTarget(cameras[0], params);
+
+	for (int i = 0; i < m_NBullets; i++) {
+		m_Recharges.Add(1.f);
+	}
+}
+
+void ASS_Player_Controller::Tick(float deltaTime)
+{
+	for (int i = m_RemainingBullets; i < m_NBullets; i++) {
+		if (m_Recharges[i] < 1.f) {
+			m_Recharges[i] += deltaTime / Cooldown;
+		}
+		else {
+			m_Recharges[i] = 1.f;
+			m_RemainingBullets++;
+		}
+	}
+
+	if (m_RemainingBullets < m_NBullets) {
+		m_Recharges.Sort([](int a, int b) { return a > b; });
+	}
+
+	//GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::Yellow, FString::Printf(TEXT("Remaining bullets: %d"), m_RemainingBullets));
+	EmitBulletRecharges();
 }
 
 void ASS_Player_Controller::SetupInputComponent()
@@ -57,17 +85,21 @@ void ASS_Player_Controller::MoveHorizontal(float value)
 
 void ASS_Player_Controller::Dash()
 {
+	// TODO eventually
 }
 
 void ASS_Player_Controller::Shoot()
 {
+	if (m_RemainingBullets == 0)
+		return;
+
 	auto pawn = Cast<ASS_SpaceCraft>(GetPawn());
 
 	auto spawn_pos = pawn->GetActorLocation() + pawn->GetActorRightVector() * 100.f;
 	auto spawn_rot = FRotator(0.0f);
 	FActorSpawnParameters spawn_params;
 	GetWorld()->SpawnActor<ASS_Projectile>(Projectile_BP, spawn_pos, spawn_rot, spawn_params);
-	UE_LOG(LogTemp, Warning, TEXT("SHOOTING"));
+	m_Recharges[--m_RemainingBullets] = 0.f;
 }
 
 bool ASS_Player_Controller::CheckBoundaries(AActor* pawn, int axis, float value)
@@ -99,4 +131,16 @@ FVector2D ASS_Player_Controller::GetViewportPosition(AActor* pawn)
 	ProjectWorldLocationToScreen(pawn->GetActorLocation(), screen_pos, true);
 
 	return screen_pos;
+}
+
+void ASS_Player_Controller::EmitBulletRecharges()
+{
+	TArray<UUserWidget*> widgets;
+	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), widgets, USS_Widget_HUD::StaticClass());
+
+	auto widget = Cast<USS_Widget_HUD>(widgets[0]);
+
+	if (widget) {
+		widget->OnBulletRecharges.Broadcast(m_Recharges);
+	}
 }

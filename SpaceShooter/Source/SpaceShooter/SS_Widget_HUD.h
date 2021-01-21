@@ -7,6 +7,9 @@
 #include "SS_Widget_HUD.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAsteroidDestroyed);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBulletRecharges, const TArray<float>&, bulletRecharges);
+
 /**
  * 
  */
@@ -18,4 +21,7 @@ class SPACESHOOTER_API USS_Widget_HUD : public UUserWidget
 public:
 	UPROPERTY(BlueprintAssignable, BlueprintReadOnly)
 		FAsteroidDestroyed OnAsteroidDestroyed;
+
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly)
+		FBulletRecharges OnBulletRecharges;
 };
