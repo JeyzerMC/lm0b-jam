@@ -41,6 +41,11 @@ void ASS_Player_Controller::BeginPlay()
 
 void ASS_Player_Controller::Tick(float deltaTime)
 {
+	Super::Tick(deltaTime);
+	if (UGameplayStatics::IsGamePaused(GetWorld())) {
+		return;
+	}
+
 	bool recharged = false;
 	for (int i = m_RemainingBullets; i < m_NBullets; i++) {
 		if (m_Recharges[i] < 1.f) {
