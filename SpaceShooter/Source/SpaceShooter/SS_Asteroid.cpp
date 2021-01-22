@@ -35,6 +35,8 @@ void ASS_Asteroid::BeginPlay()
 
 	idx = FMath::RandRange(0, Materials.Num() - 1);
 	SM_Asteroid->SetMaterial(0, Materials[idx]);
+	m_RotationAxis = FRotator(FMath::FRandRange(-90.f, 90.f), FMath::FRandRange(-90.f, 90.f), FMath::FRandRange(-90.f, 90.f));
+	m_RotationSpeed = FMath::FRandRange(0.5f, 3.f);
 }
 
 // Called every frame
@@ -45,6 +47,8 @@ void ASS_Asteroid::Tick(float deltaTime)
 	// Move to the left
 	auto loc = GetActorLocation();
 	auto dir = FVector(0.0f, -1.0f, 0.0f);
+
+	AddActorLocalRotation(m_RotationAxis * deltaTime * m_RotationSpeed);
 	
 	SetActorLocation(loc + deltaTime * MovementSpeed * dir);
 
@@ -84,6 +88,14 @@ void ASS_Asteroid::UpdateScore()
 	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), widgets, USS_Widget_HUD::StaticClass());
 
 	auto widget = Cast<USS_Widget_HUD>(widgets[0]);
+
+	if (DeathParticles.Num() > 0 && DeathParticles.Num() == ParticleScales.Num()) {
+		int idx = FMath::RandRange(0, DeathParticles.Num() - 1);
+		auto particle = DeathParticles[idx];
+		auto transform = GetActorTransform();
+		transform.SetScale3D(FVector(ParticleScales[idx]));
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), particle, transform);
+	}
 
 	if (widget) {
 		widget->OnAsteroidDestroyed.Broadcast();

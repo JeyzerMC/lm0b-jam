@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Particles/ParticleSystem.h"
 #include "SS_Asteroid.generated.h"
 
 UCLASS()
@@ -26,6 +27,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<UMaterialInstance*> Materials;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<UParticleSystem*> DeathParticles;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<float> ParticleScales;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -40,4 +47,8 @@ private:
 	bool CheckBoundary();
 
 	void UpdateScore();
+
+	FRotator m_RotationAxis;
+
+	float m_RotationSpeed;
 };
