@@ -1,5 +1,5 @@
-# lm0b-jam
-LM0B Game jam to practice UE4 C++
+# Prismatic Armacadia
+Itch.io page to download the game: https://jeyzermc.itch.io/prismaticarmacadia
 
 Prismatic Armacadia is a Chiptune themed arcade Space Shooter made with UE4.
 
