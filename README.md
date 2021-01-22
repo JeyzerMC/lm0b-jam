@@ -3,7 +3,7 @@ Itch.io page to download the game: https://jeyzermc.itch.io/prismaticarmacadia
 
 Prismatic Armacadia is a Chiptune themed arcade Space Shooter made with UE4.
 
-Try to surpass your heighest score by dodging asteroids and shooting your way through them.
+Try to surpass your highest score by dodging asteroids and shooting your way through them.
 
 Keyboard:
 WASD to move
